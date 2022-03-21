@@ -3,6 +3,7 @@ import Component from '../../core/Component.js';
 import { savedVideosStorage } from '../../localStorage/savedVideos.js';
 import { rootStore } from '../../store/rootStore.js';
 import throttle from '../../utils/throttle.js';
+import { requestMockData } from '../../__mocks__/request.js';
 
 export default class SearchBar extends Component {
   template() {
@@ -46,7 +47,11 @@ export default class SearchBar extends Component {
 
     rootStore.setState({ isLoading: true });
 
-    const [error, data] = await getSearchAPI(query);
+    const [error, data] = await getSearchAPI(
+      query,
+      null,
+      requestMockData.success
+    );
 
     if (error) {
       rootStore.setState({
@@ -83,17 +88,18 @@ export function makeCardData(rawVideos, savedVideos) {
 }
 
 function addSavedToVideos(videos, savedVideos) {
-  // TODO: 이중 for문 해결
-  return videos.map(video => {
+  const result = videos.map(video => {
     const saved = savedVideos.some(
       savedVideo => savedVideo.videoId === video.videoId
     );
     return { ...video, saved };
   });
+
+  return result;
 }
 
 function extractCardData(rawVideos) {
-  return rawVideos.map(({ id, snippet }) => {
+  const result = rawVideos.map(({ id, snippet }) => {
     return {
       videoId: id.videoId,
       thumbnailUrl: snippet.thumbnails.default.url,
@@ -102,4 +108,6 @@ function extractCardData(rawVideos) {
       publishTime: snippet.publishTime,
     };
   });
+
+  return result;
 }

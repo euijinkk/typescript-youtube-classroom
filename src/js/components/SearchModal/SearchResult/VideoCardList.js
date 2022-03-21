@@ -6,6 +6,7 @@ import { makeCardData } from '../SearchBar.js';
 import SkeletonCard from './SkeletonCard.js';
 import { LOAD_VIDEOS_COUNT } from '../../../constant.js';
 import { savedVideosStorage } from '../../../localStorage/savedVideos';
+import { requestMockData } from '../../../__mocks__/request.js';
 
 export default class VideoCardList extends Component {
   setup() {
@@ -37,16 +38,14 @@ export default class VideoCardList extends Component {
 
   afterMounted() {
     const { videos, isLoading } = rootStore.state;
-    const videoCards = this.target.querySelectorAll('.video-card.real');
+    const videoCards = this.$$('.video-card.real');
     videoCards.forEach((videoCard, index) => {
       index < videos.length &&
         new VideoCard(videoCard, { video: videos[index] });
     });
 
     if (isLoading) {
-      const skeletonCards = this.target.querySelectorAll(
-        '.video-card.skeleton'
-      );
+      const skeletonCards = this.$$('.video-card.skeleton');
       skeletonCards.forEach(skeletonCard => {
         new SkeletonCard(skeletonCard);
       });
@@ -82,7 +81,11 @@ export default class VideoCardList extends Component {
 
   async loadNextVideos() {
     const { query, pageToken: prevPageToken } = rootStore.state.searchOption;
-    const [error, data] = await getSearchAPI(query, prevPageToken);
+    const [error, data] = await getSearchAPI(
+      query,
+      prevPageToken,
+      requestMockData.success
+    );
 
     if (error) {
       alert(`${error.message}, status: ${error.statusCode}`);

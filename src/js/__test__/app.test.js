@@ -21,14 +21,16 @@ describe('localStorage', () => {
 
     expect(savedVideosStorage.load()).toEqual([]);
     savedVideosStorage.save([...savedVideosStorage.load(), videoId]);
-    expect(savedVideosStorage.load()).toEqual(['F_sOWEje2mE']);
+    expect(savedVideosStorage.load()).toEqual([videoId]);
   });
 
   it(`localStorage에 저장된 영상이 ${MAX_SAVE_COUNT}개를 초과하면, 더 이상 저장되지 않는다.`, () => {
     expect(() => {
-      for (let i = 0; i < MAX_SAVE_COUNT + 1; i++) {
-        savedVideosStorage.save([...savedVideosStorage.load(), i]);
-      }
+      Array(MAX_SAVE_COUNT + 1)
+        .fill()
+        .map((_, i) => {
+          savedVideosStorage.save([...savedVideosStorage.load(), i]);
+        });
     }).toThrowError(ALERT_MESSAGE.EXCEED_MAX_SAVE_VOLUME);
   });
 

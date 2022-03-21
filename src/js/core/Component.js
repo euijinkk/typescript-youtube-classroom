@@ -1,7 +1,8 @@
 import { setCurrentObserver } from '../store/rootStore.js';
+import { $, $$ } from '../utils/DOM.js';
 
 export default class Component {
-  constructor(protected target: HTMLElement, protected props?: any) {
+  constructor(target, props) {
     this.target = target;
     this.props = props;
     this.setup();
@@ -46,6 +47,10 @@ export default class Component {
   }
 
   $(selector) {
-    return this.target.querySelector(selector);
+    return $(selector, this.target);
+  }
+
+  $$(selector) {
+    return $$(selector, this.target);
   }
 }
