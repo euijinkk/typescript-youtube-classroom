@@ -1,8 +1,11 @@
 import { setCurrentObserver } from '../store/rootStore.js';
 import { $, $$ } from '../utils/DOM.js';
 
-export default class Component {
-  constructor(target, props) {
+export default abstract class Component {
+  // @any
+  state: any;
+
+  constructor(protected target: HTMLElement, protected props?: any) {
     this.target = target;
     this.props = props;
     this.setup();
@@ -28,17 +31,19 @@ export default class Component {
     setCurrentObserver(null);
   }
 
-  setState(newState) {
+  setState<T>(newState: T) {
     this.state = { ...this.state, ...newState };
     this.render();
   }
 
   setEvent() {}
 
-  addEvent(eventType, selector, callback) {
-    const isTarget = target => target.closest(selector);
+  addEvent(eventType: string, selector: string, callback: any) {
+    const isTarget = (target: HTMLElement) => target.closest(selector);
 
     this.target.addEventListener(eventType, event => {
+      if (!(event.target instanceof HTMLElement)) return;
+
       if (!isTarget(event.target)) return;
 
       event.preventDefault();
@@ -46,11 +51,11 @@ export default class Component {
     });
   }
 
-  $(selector) {
+  $(selector: string) {
     return $(selector, this.target);
   }
 
-  $$(selector) {
+  $$(selector: string) {
     return $$(selector, this.target);
   }
 }
