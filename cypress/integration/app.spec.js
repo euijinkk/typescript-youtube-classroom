@@ -12,7 +12,7 @@ describe('유튜브 App 태스트', () => {
       },
       { fixture: 'searchResult.json' }
     );
-    cy.visit('http://localhost:8080/');
+    cy.visit('http://localhost:9000/');
   });
 
   it('검색을 하면(enter), 10개의 영상 데이터를 받아와서, 화면에 보여준다.', () => {
