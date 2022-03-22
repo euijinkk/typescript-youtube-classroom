@@ -38,7 +38,7 @@ export default abstract class Component {
 
   setEvent() {}
 
-  addEvent(eventType: string, selector: string, callback: any) {
+  addEvent(eventType: string, selector: string, callback: addEventCallBack) {
     const isTarget = (target: HTMLElement) => target.closest(selector);
 
     this.target.addEventListener(eventType, event => {
@@ -59,3 +59,5 @@ export default abstract class Component {
     return $$(selector, this.target);
   }
 }
+
+type addEventCallBack = (event: Event) => any;

@@ -15,3 +15,8 @@ export const $$ = (
 ): NodeListOf<Element> => {
   return target.querySelectorAll(selector);
 };
+
+// @notWorking
+// export const isInstanceOfHTMLElement = (target: HTMLElement | null) => {
+//   return target instanceof HTMLElement;
+// };

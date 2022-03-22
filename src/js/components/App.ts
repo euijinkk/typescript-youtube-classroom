@@ -3,6 +3,8 @@ import MainPage from './MainPage/MainPage.js';
 import SearchModal from './SearchModal/SearchModal.js';
 
 export default class App extends Component {
+  $searchModal: HTMLElement | null = null;
+
   template() {
     return `
       <main id="main-page" class="classroom-container"></main>
@@ -22,6 +24,7 @@ export default class App extends Component {
   }
 
   toggleSearchModal() {
+    if (!(this.$searchModal instanceof HTMLElement)) return;
     this.$searchModal.classList.toggle('hide');
   }
 }

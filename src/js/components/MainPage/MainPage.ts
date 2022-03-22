@@ -87,7 +87,9 @@ export default class MainPage extends Component {
     this.addEvent('click', '.nav-left', this.handleMode.bind(this));
   }
 
-  handleMode(e) {
+  handleMode(e: Event) {
+    if (!(e.target instanceof HTMLInputElement)) return;
+
     if (!e.target.name) {
       return;
     }
@@ -96,6 +98,6 @@ export default class MainPage extends Component {
     }
 
     const { watchedMode } = this.state;
-    this.setState({ watchedMode: !watchedMode });
+    this.setState<{ watchedMode: boolean }>({ watchedMode: !watchedMode });
   }
 }
